@@ -1,14 +1,151 @@
-<div class="col-md-12 categorias">
-    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 cntcat" ng-repeat="category in categories.categoriasproductos| filter:categoryFilters | orderBy:orderProp">
-        <div class="item">
-           <a ng-controller="userCtrl" ng-href="{{ url + category.id}}">   
-                <img ng-if="category.logo != 'null'" ng-src="{{cMovilConfig.URL_UPLOADS}}/images/categoria_productos/{{category.empresa}}/{{category.sucursal}}/thumb{{category.logo}}" class="img-responsive u-center-image" alt="">
-                <img ng-if="category.logo =='null'" ng-src="images/logo_transparente.png" alt="logo" class="img-responsive">
-                <h5>{{category.nombre| limitTo:102}} </h5>
-            </a>
+<div class="col-md-12 categorias" ng-init="lengthLimit = 16; categories_filtered = [];">    
+    <div class="col-md-3 col-sm-4 col-xs-4 cntcat" ng-repeat="category in categories_filtered">
+        <div class="item" ng-if="isMobile === true">
+            <a ng-controller="userCtrl" ng-href="{{ url + category.id}}">   
+                <img ng-src="{{cMovilConfig.URL_UPLOADS}}/images/categoria_productos/{{category.empresa}}/{{category.sucursal}}/thumb{{category.logo}}" class="img-responsive u-center-image" alt="">
+                <h5 class="category-list-item" ng-if="
+                    ( 
+                        ( $index % 3 === 0 ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) && 
+                        ( ( categories_filtered.length < ($index + 2) ) || ( categories_filtered[$index + 1].nombre.length < lengthLimit ) ) && 
+                        ( ( categories_filtered.length < ($index + 3) ) || ( categories_filtered[$index + 2].nombre.length < lengthLimit ) ) 
+                    ) 
+                        || 
+                    ( 
+                        ( $index % 3 === 1 ) && 
+                        ( categories_filtered[$index - 1].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) && 
+                        ( ( categories_filtered.length < ($index + 2) ) || ( categories_filtered[$index + 1].nombre.length < lengthLimit ) ) 
+                    ) 
+                        ||
+                    ( 
+                        ( $index % 3 === 2 ) && 
+                        ( categories_filtered[$index - 2].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index - 1].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) 
+                    )" 
+                style="width: 90%;margin: 0 auto;word-break: break-word;white-space: unset;padding-top: 5px;height: 24px;text-overflow: clip;overflow: visible;">
+                    {{ category.nombre| limitTo:102 }}
+                </h5>
+                <h5 class="category-list-item" ng-if="
+                    ( 
+                        ( $index % 3 === 0 ) && 
+                        (
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index + 1].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index + 2].nombre.length >= lengthLimit ) 
+                        ) 
+                    ) 
+                        || 
+                    ( 
+                        ( $index % 3 === 1 ) && 
+                        (
+                            ( categories_filtered[$index - 1].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) || 
+                            ( categories_filtered[$index + 1].nombre.length >= lengthLimit )
+                        )
+                    ) 
+                        ||
+                    ( 
+                        ( $index % 3 === 2 ) && 
+                        (
+                            ( categories_filtered[$index - 2].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index - 1].nombre.length >= lengthLimit ) || 
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) 
+                        )
+                    )" 
+                style="width: 90%;margin: 0 auto;word-break: break-word;white-space: unset;padding-top: 5px;height: 50px;text-overflow: clip;overflow: visible;">
+                    {{ category.nombre| limitTo:102 }}
+                </h5>  
+            </a>            
+        </div>
+        <div class="item" ng-if="isMobile === false">
+            <a ng-controller="userCtrl" ng-href="{{ url + category.id}}">   
+                <img ng-src="{{cMovilConfig.URL_UPLOADS}}/images/categoria_productos/{{category.empresa}}/{{category.sucursal}}/thumb{{category.logo}}" class="img-responsive u-center-image" alt="">
+                <h5 class="category-list-item" ng-if="
+                    ( 
+                        ( $index % 4 === 0 ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) && 
+                        ( ( categories_filtered.length < ($index + 2) ) || ( categories_filtered[$index + 1].nombre.length < lengthLimit ) ) && 
+                        ( ( categories_filtered.length < ($index + 3) ) || ( categories_filtered[$index + 2].nombre.length < lengthLimit ) ) && 
+                        ( ( categories_filtered.length < ($index + 4) ) || ( categories_filtered[$index + 3].nombre.length < lengthLimit ) ) 
+                    ) 
+                        || 
+                    ( 
+                        ( $index % 4 === 1 ) && 
+                        ( categories_filtered[$index - 1].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) && 
+                        ( ( categories_filtered.length < ($index + 2) ) || ( categories_filtered[$index + 1].nombre.length < lengthLimit ) ) &&
+                        ( ( categories_filtered.length < ($index + 3) ) || ( categories_filtered[$index + 2].nombre.length < lengthLimit ) ) 
+                    ) 
+                        || 
+                    ( 
+                        ( $index % 4 === 2 ) && 
+                        ( categories_filtered[$index - 2].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index - 1].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) && 
+                        ( ( categories_filtered.length < ($index + 2) ) || ( categories_filtered[$index + 1].nombre.length < lengthLimit ) )
+                    ) 
+                        ||
+                    ( 
+                        ( $index % 4 === 3 ) && 
+                        ( categories_filtered[$index - 3].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index - 2].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index - 1].nombre.length < lengthLimit ) && 
+                        ( categories_filtered[$index].nombre.length < lengthLimit ) 
+                    )" 
+                style="width: 90%;margin: 0 auto;word-break: break-word;white-space: unset;padding-top: 5px;height: 24px;text-overflow: clip;overflow: visible;">
+                    {{ category.nombre| limitTo:102 }}
+                </h5>
+                <h5 class="category-list-item" ng-if="
+                    ( 
+                        ( $index % 4 === 0 ) && 
+                        (
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index + 1].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index + 2].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index + 3].nombre.length >= lengthLimit ) 
+                        ) 
+                    ) 
+                        || 
+                    ( 
+                        ( $index % 4 === 1 ) && 
+                        (
+                            ( categories_filtered[$index - 1].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) || 
+                            ( categories_filtered[$index + 1].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index + 2].nombre.length >= lengthLimit )
+                        )
+                    ) 
+                        || 
+                    ( 
+                        ( $index % 4 === 2 ) && 
+                        (
+                            ( categories_filtered[$index - 2].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index - 1].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) || 
+                            ( categories_filtered[$index + 1].nombre.length >= lengthLimit )
+                        )
+                    ) 
+                        ||
+                    ( 
+                        ( $index % 4 === 3 ) && 
+                        (
+                            ( categories_filtered[$index - 3].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index - 2].nombre.length >= lengthLimit ) ||
+                            ( categories_filtered[$index - 1].nombre.length >= lengthLimit ) || 
+                            ( categories_filtered[$index].nombre.length >= lengthLimit ) 
+                        )
+                    )" 
+                style="width: 90%;margin: 0 auto;word-break: break-word;white-space: unset;padding-top: 5px;height: 50px;text-overflow: clip;overflow: visible;">
+                    {{ category.nombre| limitTo:102 }}
+                </h5>  
+            </a>            
         </div>
     </div>
 </div>
+
+
 
 
 

@@ -62,31 +62,30 @@ angular.module('cMovilApp').run(function ($filter, $FB, $rootScope, $location, c
             {
                 return false;
             }
-        }
+        } 
     }
     $rootScope.inter = null;
     var history = [];
-
     $rootScope.$on('$routeChangeStart', function (event) {
+      let is_modalShow2 = $('.caja_idiomas').is(':visible');
+        if(is_modalShow2) {
+     $('.caja_idiomas').hide();
+        }  
         let is_modalShow = $('.modal').is(':visible');
         if(is_modalShow) {
-            event.preventDefault();
-            $('.modal').modal('hide');
-        }        
-    });
-
+        event.preventDefault();
+        $('.modal').modal('hide');
+        }
+    });	
     $rootScope.$on('$routeChangeSuccess', function () {
         $('.modal').modal('hide');
-        // $('.modal-backdrop').modal('hide');
         $interval.cancel($rootScope.inter);
         history.push($location.$$path);
-    });   
-    
+    });
+
 
     $rootScope.back = function () {
-        console.log('back');
         $('.modal').modal('hide');
-        // $('.modal-backdrop').modal('hide');
         var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
         $location.path(prevUrl);
 
@@ -123,31 +122,31 @@ cMovilApp.config(['$compileProvider', 'localStorageServiceProvider', '$routeProv
                     controller: 'establishmentCtrl'
                 }).
                 when('/categories', {
-                    templateUrl: 'partials/category-list.html?1111',
+                    templateUrl: 'partials/category-list.html',
                     controller: 'categoriesCtrl'
                 }).
                 when('/products/:categoria', {
-                    templateUrl: 'partials/product-list.html?1121',
+                    templateUrl: 'partials/product-list.html',
                     controller: 'productsCtrl'
                 }).
                 when('/products/popular/:tipo', {
-                    templateUrl: 'partials/product-list.html?111',
+                    templateUrl: 'partials/product-list.html',
                     controller: 'productsCtrl'
                 }).
                 when('/client/products/popular/:tipo', {
-                    templateUrl: 'partials/client-product-list.html?1111',
+                    templateUrl: 'partials/client-product-list.html',
                     controller: 'productsByClientCtrl'
                 }).
                 when('/popular/alergens/:tipo', {
-                    templateUrl: 'partials/product-alergens-list.html?1111',
+                    templateUrl: 'partials/product-alergens-list.html',
                     controller: 'productsByClientCtrl'
                 }).
                 when('/products', {
-                    templateUrl: 'partials/product-list.html?1121',
+                    templateUrl: 'partials/product-list.html',
                     controller: 'productsCtrl'
                 }).
                 when('/product/:producto', {
-                    templateUrl: 'partials/detail-product.html?11232',
+                    templateUrl: 'partials/detail-product.html',
                     controller: 'detailProductCtrl'
                 }).
                 when('/wishlist', {
@@ -163,11 +162,11 @@ cMovilApp.config(['$compileProvider', 'localStorageServiceProvider', '$routeProv
                     controller: 'orderCtrl'
                 }).
                 when('/client/products/:categoria', {
-                    templateUrl: 'partials/client-product-list.html?11211',
+                    templateUrl: 'partials/client-product-list.html',
                     controller: 'productsByClientCtrl'
                 }).
                 when('/products/alergens/:categoria', {
-                    templateUrl: 'partials/product-alergens-list.html?!1111',
+                    templateUrl: 'partials/product-alergens-list.html',
                     controller: 'productsByClientCtrl'
                 }).
                 when('/login', {
