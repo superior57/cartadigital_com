@@ -1,0 +1,75 @@
+<div class="col-md-12 productos">
+
+    <!-- SEARCH -->
+    <div class="col-md-12 sp cabecera">
+        <div class="col-md-12 col-xs-12 busqueda">
+            <div class="col-md-8 sp col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search"></span></span>
+                    <input type="text" ng-model="searchText" class="form-control" placeholder="{{'Search'| translate  }}" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xs-5">
+
+                <select name="filtrar" ng-change="order(orderProp)" ng-model="orderProp" class="form-control">
+                    <option value="orden">{{'Order by default'| translate  }}</option>
+                    <option value="nombre">{{'Order by name'| translate  }}</option>
+                    <option value="puntaje">{{'Order by photo quality'| translate  }}</option> 
+                    <option value="rating">{{'Order by reviews'| translate  }}</option> 
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="col-md-4 col-lg-4 col-sm-5 alerta mensaje col-md-offset-4 col-sm-offset-3 col-xs-offset-1">
+        <div ng-if="showMessage" class="alert alert-success" role="alert"><strong><span class="glyphicon glyphicon-info-sign"></span></strong> {{ msg}}</div>
+    </div>
+
+    <!-- PRODUCT LIST -->
+    <div class="col-md-12 producto" ng-class-odd="'medio'" ng-repeat="product in products.productos| filter:productFilters  | filter:searchText | orderBy:orderProp :reverse">
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 text-center imagen">
+            <a data-toggle="modal" data-target="#Modal-{{product.id}}">
+                <figure>
+                    <img ng-if="product.logo != null" ng-src="{{cMovilConfig.URL_UPLOADS}}/images/productos/{{product.empresa}}/{{product.sucursal}}/thumb{{product.logo}}" alt="{{product.nombre}}" class="img-responsive">
+                    <img ng-if="product.logo == null" ng-src="images/logo_transparente.png" alt="logo" class="img-responsive">
+
+
+                    <div class="banda" ng-controller="TypeProductCtrl" ng-if="product.tipo > 1">
+                        <img src="{{getImage(product.tipo);}}" class="img-responsive">
+                    </div>
+                </figure>
+            </a>
+
+            <div ng-include src="'partials/_modaldetail.html'"></div>
+        </div>
+        <div class="col-lg-8 col-md-7 col-sm-6 col-xs-6 descripcion">
+            <h3>{{product.nombre}}</h3>
+            <h5>{{product.descripcion| limitTo:102}}{{product.descripcion.length > 102 ? '...' : ''}} </h5>
+            <div class="precio">{{product.precio| number : 2}}{{money}}</div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3 cantidad">
+            <div class="col-md-12 sp caja_botones">
+                <div class="col-md-2 col-xs-4 col-sm-4 sp">
+                    <button class="btn btn-xs btn-info menos" ng-click="removeItem(product);"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+                <div class="col-md-8 col-xs-4 col-sm-4 text-center sp nro_cant">
+                    {{ (product.Amount) ? product.Amount : 0}}
+                </div>
+                <div class="col-md-2 col-xs-4 col-sm-4 sp">
+                    <button class="btn btn-xs btn-info mas" ng-click="addItem(product);"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+            <div class="col-md-12 text sp boton_elegir">
+                <button type="button" ng-if="product.Amount == 0 || product.Amount == null" class="btn btn-info elegir">{{'Add'| translate }}</button>
+                <button type="button" ng-if="product.suplementos.length > 0 && product.Amount > 0" class="btn btn-info elegir" data-toggle="modal" data-target="#Modal-{{product.id}}">{{'Add'| translate }} </button>
+                <button type="button" ng-if="product.suplementos.length == 0 && product.Amount > 0" ng-click="saveItem(product);" class="btn btn-info elegir">{{'Add'| translate }} </button>
+            </div>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,16 @@
+<div class="col-md-12 categorias">
+    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 cntcat" ng-repeat="category in categories.categoriasproductos| filter:categoryFilters | orderBy:orderProp">
+        <div class="item">
+           <a ng-controller="userCtrl" ng-href="{{ url + category.id}}">   
+                <img ng-if="category.logo != 'null'" ng-src="{{cMovilConfig.URL_UPLOADS}}/images/categoria_productos/{{category.empresa}}/{{category.sucursal}}/thumb{{category.logo}}" class="img-responsive u-center-image" alt="">
+                <img ng-if="category.logo =='null'" ng-src="images/logo_transparente.png" alt="logo" class="img-responsive">
+                <h5>{{category.nombre| limitTo:102}} </h5>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
